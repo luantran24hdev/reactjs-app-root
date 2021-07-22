@@ -1,39 +1,36 @@
 // TableRow.js
 
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-class TableRow extends Component {
-  constructor(props) {
-    super(props);
-    this.delete = this.delete.bind(this);
-  }
-  delete() {
+export default function TableRow(obj, key) {
+  const [state, setState] = useState({ obj: obj, key: key });
+
+  function handleDelete() {
     axios
-      .get("http://localhost:4000/persons/delete/" + this.props.obj._id)
+      .get("http://localhost:4000/persons/delete/" + state.obj.obj._id)
       .then(console.log("Deleted"))
       .catch((err) => console.log(err));
   }
-  render() {
-    return (
-      <tr>
-        <td>{this.props.obj.name}</td>
-        <td>{this.props.obj.company}</td>
-        <td>{this.props.obj.age}</td>
-        <td>
-          <Link to={"/edit/" + this.props.obj._id} className="btn btn-primary">
-            Edit
-          </Link>
-        </td>
-        <td>
-          <button onClick={this.delete} className="btn btn-danger">
-            Delete
-          </button>
-        </td>
-      </tr>
-    );
-  }
+  return (
+    <tr>
+      <td>{state.obj.obj.name}</td>
+      <td>{state.obj.obj.company}</td>
+      <td>{state.obj.obj.age}</td>
+      <td>
+        <Link
+          to={"/edit/" + state.obj.obj._id}
+          className="btn btn-primary btn-delete"
+        >
+          Edit
+        </Link>
+      </td>
+      <td>
+        <button onClick={handleDelete} className="btn btn-danger btn-delete">
+          Delete
+        </button>
+      </td>
+    </tr>
+  );
 }
-
-export default TableRow;

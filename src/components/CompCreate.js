@@ -19,44 +19,47 @@ export default function Create() {
   };
 
   return (
-    <div style={{ marginTop: 10 }}>
-      <h3>Add New Person</h3>
-      <form onSubmit={handleOnSubmit}>
-        <div className="form-group">
-          <label>Person Name: </label>
-          <input
-            type="text"
-            className="form-control"
-            value={form.name}
-            onChange={onChangeFormData("name")}
-          />
-        </div>
-        <div className="form-group">
-          <label>Company Name: </label>
-          <input
-            type="text"
-            className="form-control"
-            value={form.company}
-            onChange={onChangeFormData("company")}
-          />
-        </div>
-        <div className="form-group">
-          <label>Age: </label>
-          <input
-            type="text"
-            className="form-control"
-            value={form.age}
-            onChange={onChangeFormData("age")}
-          />
-        </div>
-        <div className="form-group">
-          <input
-            type="submit"
-            value="Register Person"
-            className="btn btn-primary"
-          />
-        </div>
-      </form>
-    </div>
+    <>
+      <h2>Dashboard</h2> <br />
+      <div style={{ marginTop: 10 }}>
+        <h3>Add New Person</h3>
+        <form onSubmit={handleOnSubmit}>
+          <div className="form-group">
+            <label>Person Name: </label>
+            <input
+              type="text"
+              className="form-control"
+              value={form.name}
+              onChange={onChangeFormData("name")}
+            />
+          </div>
+          <div className="form-group">
+            <label>Company Name: </label>
+            <input
+              type="text"
+              className="form-control"
+              value={form.company}
+              onChange={onChangeFormData("company")}
+            />
+          </div>
+          <div className="form-group">
+            <label>Age: </label>
+            <input
+              type="text"
+              className="form-control"
+              value={form.age}
+              onChange={onChangeFormData("age")}
+            />
+          </div>
+          <div className="form-group">
+            <input
+              type="submit"
+              value="Register Person"
+              className="btn btn-primary btn-create"
+            />
+          </div>
+        </form>
+      </div>
+    </>
   );
 }

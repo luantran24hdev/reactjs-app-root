@@ -1,27 +1,29 @@
-import React, { Component } from "react";
+import React from "react";
+import { useEffect, useState } from "react";
+import { useParams, useHistory } from "react-router-dom";
 import axios from "axios";
 
-export default class Edit extends Component {
-  constructor(props) {
-    super(props);
-    this.onChangeName = this.onChangeName.bind(this);
-    this.onChangeCompany = this.onChangeCompany.bind(this);
-    this.onChangeAge = this.onChangeAge.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
+export default function Edit() {
+  let history = useHistory();
+  const { id } = useParams();
 
-    this.state = {
-      name: "",
-      company: "",
-      age: "",
-    };
-  }
+  console.log("id", id);
+  const [form, setForm] = useState({ name: "", company: "", age: "" });
 
-  componentDidMount() {
+  const onChangeFormData = (keyField) => (evt) => {
+    setForm({
+      ...form,
+      [keyField]: evt.target.value,
+    });
+  };
+
+  useEffect(() => {
     axios
-      .get("http://localhost:4000/persons/edit/" + this.props.match.params.id)
+      .get("http://localhost:4000/persons/edit/" + id)
       .then((response) => {
         console.log("response", response);
-        this.setState({
+        console.log("response", response);
+        setForm({
           name: response.data.name,
           company: response.data.company,
           age: response.data.age,
@@ -30,53 +32,36 @@ export default class Edit extends Component {
       .catch(function (error) {
         console.log(error);
       });
-  }
+  }, []);
 
-  onChangeName(e) {
-    this.setState({
-      name: e.target.value,
-    });
-  }
-  onChangeCompany(e) {
-    this.setState({
-      company: e.target.value,
-    });
-  }
-  onChangeAge(e) {
-    this.setState({
-      age: e.target.value,
-    });
-  }
-
-  onSubmit(e) {
+  const onSubmit = (e) => {
     e.preventDefault();
     const obj = {
-      name: this.state.name,
-      company: this.state.company,
-      age: this.state.age,
+      name: form.name,
+      company: form.company,
+      age: form.age,
     };
     axios
-      .post(
-        "http://localhost:4000/persons/update/" + this.props.match.params.id,
-        obj
-      )
+      .post("http://localhost:4000/persons/update/" + id, obj)
       .then((res) => console.log(res.data));
 
-    this.props.history.push("/list-person");
-  }
+    // this.props.history.push("/list-person");
+    history.push("/list-person");
+  };
 
-  render() {
-    return (
+  return (
+    <>
+      <h2>Dashboard</h2> <br />
       <div style={{ marginTop: 10 }}>
         <h3 align="center">Update Person Info</h3>
-        <form onSubmit={this.onSubmit}>
+        <form onSubmit={onSubmit}>
           <div className="form-group">
             <label>Person Name: </label>
             <input
               type="text"
               className="form-control"
-              value={this.state.name}
-              onChange={this.onChangeName}
+              value={form?.name}
+              onChange={onChangeFormData("name")}
             />
           </div>
           <div className="form-group">
@@ -84,8 +69,8 @@ export default class Edit extends Component {
             <input
               type="text"
               className="form-control"
-              value={this.state.company}
-              onChange={this.onChangeCompany}
+              value={form?.company}
+              onChange={onChangeFormData("company")}
             />
           </div>
           <div className="form-group">
@@ -93,8 +78,8 @@ export default class Edit extends Component {
             <input
               type="text"
               className="form-control"
-              value={this.state.age}
-              onChange={this.onChangeAge}
+              value={form?.age}
+              onChange={onChangeFormData("age")}
             />
           </div>
           <div className="form-group">
@@ -106,6 +91,6 @@ export default class Edit extends Component {
           </div>
         </form>
       </div>
-    );
-  }
+    </>
+  );
 }
